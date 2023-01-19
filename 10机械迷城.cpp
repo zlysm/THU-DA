@@ -137,6 +137,7 @@ class Map {
     int SIZE;
     bool *graph, *visited;
     char *action;
+    std::vector<char> path;
     const short dx[4] = {0, -1, 0, 1};  //left, right
     const short dy[4] = {-1, 0, 1, 0};  //up, down
 
@@ -157,7 +158,9 @@ class Map {
 public:
     Map(short x, short y);
 
-    int BFS(const Point &start, const Point &end, std::vector<char> &path);
+    int BFS(const Point &start, const Point &end);
+
+    void print();
 };
 
 int main() {
@@ -174,13 +177,10 @@ int main() {
     }
 
     int count = 0;
-    count += map.BFS(targets[0], targets[1], path);
-    count += map.BFS(targets[1], targets[2], path);
+    count += map.BFS(targets[0], targets[1]);
+    count += map.BFS(targets[1], targets[2]);
     printf("%d\n", count);
-
-    int len = path.size();
-    for (int i = 0; i < len; ++i)
-        printf(path[i] == '2' ? "F2\n" : "%c\n", path[i]);
+    map.print();
 
     return 0;
 }
@@ -201,10 +201,10 @@ Map::Map(short x, short y) {
         }
 }
 
-int Map::BFS(const Point &start, const Point &end, std::vector<char> &path) {
+int Map::BFS(const Point &start, const Point &end) {
     int res = 0;
     memset(visited, false, SIZE * sizeof(bool));
-    std::queue<SI> queue;
+    std::queue <SI> queue;
     queue.emplace(start, 0);
     visited[Point2Id(start)] = true;
     while (!queue.empty()) {
@@ -283,4 +283,12 @@ int Map::BFS(const Point &start, const Point &end, std::vector<char> &path) {
     }
 
     return res;
+}
+
+void Map::print() {
+    for (auto &op: path) {
+        if (op == '2') putchar('F');
+        putchar(op);
+        putchar('\n');
+    }
 }
