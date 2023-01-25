@@ -167,7 +167,6 @@ int main() {
     auto x = read<short>();
     auto y = read<short>();
     Map map(x, y);
-    std::vector<char> path;
     Point targets[3];
     for (auto &target: targets) {
         target.x = read<short>();
